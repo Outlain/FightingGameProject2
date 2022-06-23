@@ -64,6 +64,10 @@ const player1 = new Fighter({
         fall: {
             ImageSrc: './images/samuraiMack/Fall.png',
             framesMax: 2,
+        },
+        attack1: {
+            ImageSrc: './images/samuraiMack/Attack1.png',
+            framesMax: 6,
         }
 
     }
@@ -148,10 +152,10 @@ function animation() {
     } else {
         player1.spriteChange('idle')
     }
-    if (player1.velocity.y < 0) {
+    if (player1.velocity.y < -1) {
         player1.spriteChange('jump')
         console.log(player1)
-    } else if (player1.velocity > 0) {
+    } else if (player1.velocity.y > 2) {
         player1.spriteChange('fall')
     }
     // PLAYER TWO UPDATE MOVEMENT THROUGH BOOLEANS/IF STATEMENTS/EVENTLISTENERS
