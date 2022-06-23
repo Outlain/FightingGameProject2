@@ -3,80 +3,32 @@ const c = fightingCanvas.getContext('2d');
 
 fightingCanvas.width = 1400;
 fightingCanvas.height = 800;
-
+const background = new BackgroundSprite({
+    position: {
+        x: 0,
+        y: 0
+    },
+    ImageSrc: './images/background.png'
+})
+const shop = new Sprite({
+    position: {
+        x: 830,
+        y: 360,
+    },
+    ImageSrc: './images/shop.png',
+    scale: 2.5,
+    framesMax: 6
+})
 const lefthitbox = document.querySelector('.left-side-hp');
 const righthitbox = document.querySelector(".right-side-hp");
 const timerLocation = document.querySelector('.middle');
 const endMessage = document.querySelector('.end-message');
-// function left() {
-//     // lefthitbox.style.width = '90%'
-//     // righthitbox.style.width = '50%'
 
-// }
-// left();
+const globalGravity = 1.5
 
-const globalGravity = 2
-function boxCollision({ box1, box2 }) {
-    return (
-        box1.attackBox.position.x + box1.attackBox.width >= box2.position.x && box1.attackBox.position.x <= box2.position.x + box2.width && box1.attackBox.position.y + box1.attackBox.height >= box2.position.y && box1.attackBox.position.y <= box2.position.y + box2.height
-    )
-}
-class FutureSpriteAnimation {
-    constructor({ position, velocity, color, displacement }) {
-        this.position = position;
-        this.velocity = velocity;
-        this.width = 50
-        this.height = 180
-        this.lastKey = '';
-        this.attackBox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y
-            },
-            displacement: displacement,
-            width: 150,
-            height: 50,
-        }
-        this.color = color
-        this.isAttacking = false;
-        this.health = 100
-    }
-    draw() {
-        c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        if (this.isAttacking) {
-            c.strokeStyle = "green"
-            c.lineWidth = 8;
-            c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-        }
-    }
-    update() {
-        this.draw()
-        this.attackBox.position.x = this.position.x + this.attackBox.displacement.x
-        this.attackBox.position.y = this.position.y
-        this.position.y += this.velocity.y
-        if (this.position.y > fightingCanvas.height - 200) {
-            this.velocity.y = 0
-            this.position.y = fightingCanvas.height - this.height
-        } else {
-            this.velocity.y += globalGravity
-        }
-        this.position.x += this.velocity.x
-    }
-    attack() {
-        this.isAttacking = true;
-        setTimeout(() => {
-            this.isAttacking = false
-        }, 100)
-    }
-    // drawattackBox() {
-    //     c.strokeStyle = "green"
-    //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-    // }
-}
-const player1 = new FutureSpriteAnimation({
+const player1 = new Fighter({
     position: {
-        x: 500,
+        x: 250,
         // y: -(fightingCanvas.height - 600)
         y: 0
     },
@@ -90,11 +42,11 @@ const player1 = new FutureSpriteAnimation({
         y: 0
     }
 })
-const player2 = new FutureSpriteAnimation({
+const player2 = new Fighter({
     position: {
-        x: fightingCanvas.width - 500,
+        x: fightingCanvas.width - 300,
         // y: -(fightingCanvas.height - 400)
-        y: 40
+        y: 0
     },
     velocity: {
         x: 0,
@@ -127,38 +79,13 @@ const keybugfix = {
         pressed: false
     }
 }
-function determinWhoWins({ player1, player2, timerID }) {
-    clearTimeout(timerID)
-    if (player1.health === player2.health) {
-        console.log("tie")
-        endMessage.innerHTML = "Tie"
-        endMessage.style.display = 'flex'
-    } else if (player1.health > player2.health) {
-        endMessage.innerHTML = "Player1 Wins!"
-        endMessage.style.display = 'flex'
-    } else if (player1.health < player2.health) {
-        endMessage.innerHTML = "Player2 Wins!"
-        endMessage.style.display = 'flex'
-    }
-}
-let timer = 100
-timerID = '';
-function decreaseTimer() {
-    timerID = setTimeout(decreaseTimer, 100)
-    if (timer > 0) {
-        timer--
-        timerLocation.innerHTML = timer
-    }
-    if (timer === 0) {
-        determinWhoWins({ player1, player2, timerID })
-    }
-}
-
 decreaseTimer()
 function animation() {
     c.clearRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     c.fillStyle = 'black'
     c.fillRect(0, 0, fightingCanvas.width, fightingCanvas.height)
+    background.update();
+    shop.update();
     window.requestAnimationFrame(animation);
     // console.log("fighting animation frames running")
     player1.update()
@@ -218,7 +145,7 @@ window.addEventListener('keydown', function (event) {
             player1.lastKey = 'a'
             break;
         case 'w':
-            player1.velocity.y = -30
+            player1.velocity.y = -35
             break;
         case ' ':
             player1.attack();
@@ -232,7 +159,7 @@ window.addEventListener('keydown', function (event) {
             player2.lastKey = 'ArrowLeft'
             break;
         case 'ArrowUp':
-            player2.velocity.y = -30
+            player2.velocity.y = -35
             break;
         case 'ArrowDown':
             player2.attack();

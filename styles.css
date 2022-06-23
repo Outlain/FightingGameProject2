@@ -53,7 +53,7 @@ body {
   font-size: 2rem;
   padding: 10px;
   border: 3px solid red;
-  box-shadow: 0px 6px 10px 8px rgba(0,0,0,0.79);
+  box-shadow: 0px 6px 10px 8px rgba(0, 0, 0, 0.79);
 }
 .left-side-hp {
   height: 100%;
@@ -72,14 +72,14 @@ body {
   border-bottom-right-radius: 20px;
 }
 .end-message {
-    position: absolute;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: none;
-    font-size: 6rem
+  position: absolute;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  font-size: 6rem;
 }
