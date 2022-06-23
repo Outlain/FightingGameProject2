@@ -1,61 +1,3 @@
-class Fighter {
-    constructor({ position, velocity, color, displacement }) {
-        this.position = position;
-        this.velocity = velocity;
-        this.width = 50;
-        this.height = 180;
-        this.lastKey = "";
-        this.attackBox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y,
-            },
-            displacement: displacement,
-            width: 150,
-            height: 50,
-        };
-        this.color = color;
-        this.isAttacking = false;
-        this.health = 100;
-    }
-    draw() {
-        c.fillStyle = this.color;
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        if (this.isAttacking) {
-            c.strokeStyle = "green";
-            c.lineWidth = 8;
-            c.strokeRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            );
-        }
-    }
-    update() {
-        this.draw();
-        this.attackBox.position.x = this.position.x + this.attackBox.displacement.x;
-        this.attackBox.position.y = this.position.y;
-        this.position.y += this.velocity.y;
-        if (this.position.y > fightingCanvas.height - 300) {
-            this.velocity.y = 0;
-            this.position.y = fightingCanvas.height - 300;
-        } else {
-            this.velocity.y += globalGravity;
-        }
-        this.position.x += this.velocity.x;
-    }
-    attack() {
-        this.isAttacking = true;
-        setTimeout(() => {
-            this.isAttacking = false;
-        }, 100);
-    }
-    // drawattackBox() {
-    //     c.strokeStyle = "green"
-    //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-    // }
-}
 class BackgroundSprite {
     constructor({ position, ImageSrc }) {
         this.position = position;
@@ -78,7 +20,13 @@ class BackgroundSprite {
     }
 }
 class Sprite {
-    constructor({ position, ImageSrc, scale = 1, framesMax = 1 }) {
+    constructor({
+        position,
+        ImageSrc,
+        scale = 1,
+        framesMax = 1,
+        offset = { x: 0, y: 0 },
+    }) {
         this.position = position;
         this.width = 50;
         this.height = 180;
@@ -88,7 +36,8 @@ class Sprite {
         this.framesMax = framesMax;
         this.framesCurrent = 0;
         this.framesElapsed = 0;
-        this.framesHold = 3
+        this.framesHold = 3;
+        this.offset = offset;
     }
     draw() {
         c.drawImage(
@@ -97,21 +46,126 @@ class Sprite {
             0,
             this.image.width / this.framesMax,
             this.image.height,
-            this.position.x,
-            this.position.y,
+            this.position.x - this.offset.x,
+            this.position.y - this.offset.y,
             (this.image.width / this.framesMax) * this.scale,
             this.image.height * this.scale
         );
     }
-    update() {
-        this.draw();
-        this.framesElapsed++
+
+    framesCalculator() {
+        this.framesElapsed++;
         if (this.framesElapsed % this.framesHold === 0) {
             if (this.framesCurrent < this.framesMax - 1) {
-                this.framesCurrent++
+                this.framesCurrent++;
             } else {
-                this.framesCurrent = 0
+                this.framesCurrent = 0;
             }
         }
     }
+    update() {
+        this.draw();
+        this.framesElapsed++;
+        this.framesCalculator();
+    }
+}
+class Fighter extends Sprite {
+    constructor({
+        position,
+        velocity,
+        color,
+        displacement,
+        ImageSrc,
+        scale = 1,
+        framesMax = 1,
+        offset = { x: 0, y: 0 },
+        sprites
+    }) {
+        super({
+            position,
+            ImageSrc,
+            scale,
+            framesMax,
+            offset,
+        });
+        this.velocity = velocity;
+        this.width = 50;
+        this.height = 180;
+        this.lastKey = "";
+        this.attackBox = {
+            position: {
+                x: this.position.x,
+                y: this.position.y,
+            },
+            displacement: displacement,
+            width: 150,
+            height: 50,
+        };
+        this.color = color;
+        this.isAttacking = false;
+        this.health = 100;
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.framesHold = 50;
+        this.sprites = sprites
+
+        for (const sprite in this.sprites) {
+            sprites[sprite].image = new Image();
+            sprites[sprite].image.src = sprites[sprite].ImageSrc
+        }
+        console.log(this.sprites)
+    }
+    update() {
+        this.draw();
+        this.framesElapsed++;
+        this.framesCalculator();
+        this.attackBox.position.x = this.position.x + this.attackBox.displacement.x;
+        this.attackBox.position.y = this.position.y;
+        this.position.y += this.velocity.y;
+        if (this.position.y > fightingCanvas.height - 300) {
+            this.velocity.y = 0;
+            this.position.y = fightingCanvas.height - 300;
+        } else {
+            this.velocity.y += globalGravity;
+        }
+        this.position.x += this.velocity.x;
+    }
+    attack() {
+        this.isAttacking = true;
+        setTimeout(() => {
+            this.isAttacking = false;
+        }, 100);
+    }
+    spriteChange(sprite) {
+        switch (sprite) {
+            case 'idle':
+                if (this.image !== this.sprites.idle.image)
+                    this.image = this.sprites.idle.image
+                this.framesMax = this.sprites.idle.framesMax
+                // this.framesCurrent = 0
+                break;
+            case 'run':
+                if (this.image !== this.sprites.run.image)
+                    this.image = this.sprites.run.image
+                this.framesMax = this.sprites.run.framesMax
+                this.framesCurrent = 0
+                break;
+            case 'jump':
+                (this.image !== this.sprites.jump.image)
+                this.image = this.sprites.jump.image
+                this.framesMax = this.sprites.jump.framesMax
+                this.framesCurrent = 0
+                break;
+            case 'fall':
+                (this.image !== this.sprites.fall.image)
+                this.image = this.sprites.fall.image
+                this.framesMax = this.sprites.fall.framesMax
+                this.framesCurrent = 0
+                break;
+        }
+    }
+    // drawattackBox() {
+    //     c.strokeStyle = "green"
+    //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+    // }
 }

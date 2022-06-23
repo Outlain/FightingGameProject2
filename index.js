@@ -17,18 +17,18 @@ const shop = new Sprite({
     },
     ImageSrc: './images/shop.png',
     scale: 2.5,
-    framesMax: 6
+    framesMax: 6,
 })
 const lefthitbox = document.querySelector('.left-side-hp');
 const righthitbox = document.querySelector(".right-side-hp");
 const timerLocation = document.querySelector('.middle');
 const endMessage = document.querySelector('.end-message');
 
-const globalGravity = 1.5
+const globalGravity = 1
 
 const player1 = new Fighter({
     position: {
-        x: 250,
+        x: 0,
         // y: -(fightingCanvas.height - 600)
         y: 0
     },
@@ -40,6 +40,32 @@ const player1 = new Fighter({
     displacement: {
         x: 0,
         y: 0
+    },
+    ImageSrc: './images/samuraiMack/Idle.png',
+    framesMax: 8,
+    scale: 2.5,
+    offset: {
+        x: 215,
+        y: 135,
+    },
+    sprites: {
+        idle: {
+            ImageSrc: './images/samuraiMack/Idle.png',
+            framesMax: 8,
+        },
+        run: {
+            ImageSrc: './images/samuraiMack/Run.png',
+            framesMax: 8,
+        },
+        jump: {
+            ImageSrc: './images/samuraiMack/Jump.png',
+            framesMax: 2,
+        },
+        fall: {
+            ImageSrc: './images/samuraiMack/Fall.png',
+            framesMax: 2,
+        }
+
     }
 })
 const player2 = new Fighter({
@@ -56,6 +82,23 @@ const player2 = new Fighter({
     displacement: {
         x: -100,
         y: 0
+    },
+    ImageSrc: './images/samuraiMack/Idle.png',
+    framesMax: 8,
+    scale: 2.5,
+    offset: {
+        x: 215,
+        y: 135,
+    },
+    sprites: {
+        idle: {
+            ImageSrc: './images/samuraiMack/Idle.png',
+            framesMax: 8,
+        },
+        run: {
+            ImageSrc: './images/samuraiMack/Run.png',
+            framesMax: 8,
+        },
     }
 
 })
@@ -89,7 +132,7 @@ function animation() {
     window.requestAnimationFrame(animation);
     // console.log("fighting animation frames running")
     player1.update()
-    player2.update()
+    // player2.update()
     // console.log(player1.position.y)
     // console.log(player2.position.y)
 
@@ -97,9 +140,19 @@ function animation() {
     player2.velocity.x = 0
     // PLAYER ONE UPDATE MOVEMENT THROUGH BOOLEANS/IF STATEMENTS/EVENTLISTENERS
     if (keybugfix.a.pressed && player1.lastKey === 'a') {
-        player1.velocity.x = -6
+        player1.velocity.x = -6;
+        player1.spriteChange('run')
     } else if (keybugfix.d.pressed && player1.lastKey === 'd') {
         player1.velocity.x = 6
+        player1.spriteChange('run')
+    } else {
+        player1.spriteChange('idle')
+    }
+    if (player1.velocity.y < 0) {
+        player1.spriteChange('jump')
+        console.log(player1)
+    } else if (player1.velocity > 0) {
+        player1.spriteChange('fall')
     }
     // PLAYER TWO UPDATE MOVEMENT THROUGH BOOLEANS/IF STATEMENTS/EVENTLISTENERS
     if (keybugfix.ArrowLeft.pressed && player2.lastKey === 'ArrowLeft') {
@@ -145,7 +198,7 @@ window.addEventListener('keydown', function (event) {
             player1.lastKey = 'a'
             break;
         case 'w':
-            player1.velocity.y = -35
+            player1.velocity.y = -25
             break;
         case ' ':
             player1.attack();
@@ -159,7 +212,7 @@ window.addEventListener('keydown', function (event) {
             player2.lastKey = 'ArrowLeft'
             break;
         case 'ArrowUp':
-            player2.velocity.y = -35
+            player2.velocity.y = -25
             break;
         case 'ArrowDown':
             player2.attack();
