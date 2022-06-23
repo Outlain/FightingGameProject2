@@ -1,14 +1,19 @@
 const fightingCanvas = document.querySelector("#game-canvas");
-const c = fightingCanvas.getContext('2d')
+const c = fightingCanvas.getContext('2d');
 
 fightingCanvas.width = 1400;
 fightingCanvas.height = 800;
 
-const lefthitbox = document.querySelector('.left-side-hp')
-function left() {
-    lefthitbox.style.width = '50%'
-}
-left();
+const lefthitbox = document.querySelector('.left-side-hp');
+const righthitbox = document.querySelector(".right-side-hp");
+const timerLocation = document.querySelector('.middle');
+const endMessage = document.querySelector('.end-message');
+// function left() {
+//     // lefthitbox.style.width = '90%'
+//     // righthitbox.style.width = '50%'
+
+// }
+// left();
 
 const globalGravity = 2
 function boxCollision({ box1, box2 }) {
@@ -34,6 +39,7 @@ class FutureSpriteAnimation {
         }
         this.color = color
         this.isAttacking = false;
+        this.health = 100
     }
     draw() {
         c.fillStyle = this.color
@@ -68,7 +74,6 @@ class FutureSpriteAnimation {
     //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
     // }
 }
-
 const player1 = new FutureSpriteAnimation({
     position: {
         x: 500,
@@ -85,7 +90,6 @@ const player1 = new FutureSpriteAnimation({
         y: 0
     }
 })
-
 const player2 = new FutureSpriteAnimation({
     position: {
         x: fightingCanvas.width - 500,
@@ -103,7 +107,6 @@ const player2 = new FutureSpriteAnimation({
     }
 
 })
-
 const keybugfix = {
     a: {
         pressed: false
@@ -124,6 +127,34 @@ const keybugfix = {
         pressed: false
     }
 }
+function determinWhoWins({ player1, player2, timerID }) {
+    clearTimeout(timerID)
+    if (player1.health === player2.health) {
+        console.log("tie")
+        endMessage.innerHTML = "Tie"
+        endMessage.style.display = 'flex'
+    } else if (player1.health > player2.health) {
+        endMessage.innerHTML = "Player1 Wins!"
+        endMessage.style.display = 'flex'
+    } else if (player1.health < player2.health) {
+        endMessage.innerHTML = "Player2 Wins!"
+        endMessage.style.display = 'flex'
+    }
+}
+let timer = 100
+timerID = '';
+function decreaseTimer() {
+    timerID = setTimeout(decreaseTimer, 100)
+    if (timer > 0) {
+        timer--
+        timerLocation.innerHTML = timer
+    }
+    if (timer === 0) {
+        determinWhoWins({ player1, player2, timerID })
+    }
+}
+
+decreaseTimer()
 function animation() {
     c.clearRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     c.fillStyle = 'black'
@@ -156,6 +187,8 @@ function animation() {
     }) && player1.isAttacking) {
         console.log('Beginning to understand collision detection')
         player1.isAttacking = false;
+        player2.health -= 2
+        righthitbox.style.width = player2.health + '%'
     }
     if (boxCollision({
         box1: player1,
@@ -163,6 +196,12 @@ function animation() {
     }) && player2.isAttacking) {
         console.log('Player 2 attack detection')
         player2.isAttacking = false;
+        player1.health -= 2
+        lefthitbox.style.width = player1.health + '%'
+    }
+    // END GAME // END GAME // END GAME // END GAME
+    if (player1.health <= 0 || player2.health <= 0) {
+        determinWhoWins({ player1, player2, timerID })
     }
 }
 

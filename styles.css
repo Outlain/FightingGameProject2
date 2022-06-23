@@ -47,10 +47,17 @@ body {
   height: 100%;
   background-color: rgba(245, 245, 245, 0.5);
   border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding: 10px;
+  border: 3px solid red;
+  box-shadow: 0px 6px 10px 8px rgba(0,0,0,0.79);
 }
 .left-side-hp {
   height: 100%;
-  width: 80%;
+  width: 100%;
   background-color: rgba(255, 0, 0, 0.5);
   /* border-radius: 20px; */
   border-top-left-radius: 20px;
@@ -58,9 +65,21 @@ body {
 }
 .right-side-hp {
   height: 100%;
-  width: 80%;
+  width: 100%;
   background-color: rgba(255, 0, 0, 0.5);
   /* border-radius: 20px; */
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+.end-message {
+    position: absolute;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    font-size: 6rem
 }
