@@ -120,18 +120,18 @@ class Fighter extends Sprite {
         if (this.position.x <= 0) {
             this.position.x = 0
         }
-        if (this.position.x >= fightingCanvas.width - this.width/2) {
-            this.position.x = fightingCanvas.width - this.width/2
+        if (this.position.x >= fightingCanvas.width - this.width / 2) {
+            this.position.x = fightingCanvas.width - this.width / 2
         }
         this.draw();
         if (!this.dead) this.framesCalculator()
         this.framesElapsed++;
         this.attackBox.position.x = this.position.x + this.attackBox.displacement.x;
         this.attackBox.position.y = this.position.y + this.attackBox.displacement.y;
-        c.strokeStyle = "green"
-        c.lineWidth = '10'
-        c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-        c.strokeRect(this.position.x, this.position.y, this.width, this.height)
+        // c.strokeStyle = "green"
+        // c.lineWidth = '10'
+        // c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+        // c.strokeRect(this.position.x, this.position.y, this.width, this.height)
 
         this.position.y += this.velocity.y;
         if (this.position.y > fightingCanvas.height - 260) {

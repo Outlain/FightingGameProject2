@@ -1,7 +1,28 @@
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(45, 98, 183);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(54, 56, 58);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+canvas {
+  border-radius: 25px;
 }
 
 body {
@@ -19,7 +40,7 @@ body {
   align-items: flex;
   height: 80%;
   width: 80;
-  background-color: rgba(225, 0, 0, 0.5);
+  /* background-color: rgba(225, 0, 0, 0.5); */
 }
 .main-health {
   position: absolute;
@@ -122,17 +143,38 @@ body {
   align-items: center;
   text-align: center;
   margin-bottom: 50px;
+  overflow: auto;
+  box-shadow: 0px 6px 10px 8px rgba(0, 0, 0, 0.79);
 }
 .instructions-text {
   font-size: 1.4rem;
 }
+.instructions-text p {
+  font-size: 1.4rem;
+}
 #initializer {
-  padding: 20px 40px;
-  font-size: 5rem;
+  width: 25%;
+  height: 35%;
+  padding: 25px 40px;
+  font-size: 300%;
   border-radius: 20px;
   background-color: rgb(35, 59, 157);
   color: white;
   box-shadow: 0px 6px 10px 8px rgba(0, 0, 0, 0.79);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+img {
+  width: 25%;
+  height: auto;
+}
+span {
+  width: 60%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #initializer:hover {
   background-color: red;
