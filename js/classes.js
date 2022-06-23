@@ -117,6 +117,12 @@ class Fighter extends Sprite {
         console.log(this.sprites)
     }
     update() {
+        if (this.position.x <= 0) {
+            this.position.x = 0
+        }
+        if (this.position.x >= fightingCanvas.width - this.width/2) {
+            this.position.x = fightingCanvas.width - this.width/2
+        }
         this.draw();
         if (!this.dead) this.framesCalculator()
         this.framesElapsed++;
