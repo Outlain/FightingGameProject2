@@ -1,17 +1,17 @@
-// const gameArea = {
-//     button: document.querySelector('#initializer'),
-//     initial: document.querySelector('.starting'),
-//     game: document.querySelector('.hidden'),
-//     startFightingGame: function() {
-//         this.game.classList.toggle('hidden')
-//         this.initial.classList.add('to-hidden')
-//     }
-// }
-// // console.log(Gamearea.initial)
-// gameArea.button.addEventListener("click", function () {
-//     gameArea.startFightingGame()
-//     // console.log(gameArea)
-// });
+const gameArea = {
+    button: document.querySelector('#initializer'),
+    initial: document.querySelector('.starting'),
+    game: document.querySelector('.hidden'),
+    startFightingGame: function () {
+        this.game.classList.toggle('hidden')
+        this.initial.classList.add('to-hidden')
+    }
+}
+// console.log(Gamearea.initial)
+gameArea.button.addEventListener("click", function () {
+    gameArea.startFightingGame()
+    // console.log(gameArea)
+});
 const fightingCanvas = document.querySelector("#game-canvas");
 const c = fightingCanvas.getContext('2d');
 
@@ -82,8 +82,15 @@ const player1 = new Fighter({
         attack1: {
             ImageSrc: './images/samuraiMack/Attack1.png',
             framesMax: 6,
+        },
+        takehit: {
+            ImageSrc: './images/samuraiMack/Take Hit - white silhouette.png',
+            framesMax: 4,
+        },
+        death: {
+            ImageSrc: './images/samuraiMack/Death.png',
+            framesMax: 6,
         }
-
     }
 })
 const player2 = new Fighter({
@@ -128,6 +135,14 @@ const player2 = new Fighter({
         attack1: {
             ImageSrc: './images/warrior/Attack1.png',
             framesMax: 4,
+        },
+        takehit: {
+            ImageSrc: './images/warrior/GetHit.png',
+            framesMax: 3,
+        },
+        death: {
+            ImageSrc: './images/warrior/death.png',
+            framesMax: 9,
         }
     }
 
@@ -196,20 +211,20 @@ function animation() {
         player2.spriteChange('idle')
     }
     // PLAYER1 JUMPING // PLAYER1 JUMPING // PLAYER1 JUMPING
-    if (player2.velocity.y < -1) {
-        player1.spriteChange('jump')
+    if (player2.velocity.y < -5) {
+        player2.spriteChange('jump')
         // console.log(player1)
-    } else if (player2.velocity.y > 2) {
-        player1.spriteChange('fall')
+    } else if (player2.velocity.y > 5) {
+        player2.spriteChange('fall')
     }
     // COLLISION DETECTION // COLLISION DETECTION // COLLISION DETECTION 
     if (boxCollision({
         box1: player1,
         box2: player2
     }) && player1.isAttacking) {
+        player2.takehit()
         console.log('Beginning to understand collision detection')
         player1.isAttacking = false;
-        player2.health -= 10
         righthitbox.style.width = player2.health + '%'
     }
     if (boxCollision({
@@ -218,7 +233,7 @@ function animation() {
     }) && player2.isAttacking) {
         console.log('Player 2 attack detection')
         player2.isAttacking = false;
-        player1.health -= 10
+        player1.takehit()
         lefthitbox.style.width = player1.health + '%'
     }
     // END GAME // END GAME // END GAME // END GAME
@@ -231,36 +246,42 @@ function animation() {
 animation()
 
 window.addEventListener('keydown', function (event) {
-    switch (event.key) {
-        case 'd':
-            keybugfix.d.pressed = true
-            player1.lastKey = 'd'
-            break;
-        case 'a':
-            keybugfix.a.pressed = true
-            player1.lastKey = 'a'
-            break;
-        case 'w':
-            player1.velocity.y = -25
-            break;
-        case ' ':
-            player1.attack();
-            break;
-        case 'ArrowRight':
-            keybugfix.ArrowRight.pressed = true
-            player2.lastKey = 'ArrowRight'
-            break;
-        case 'ArrowLeft':
-            keybugfix.ArrowLeft.pressed = true
-            player2.lastKey = 'ArrowLeft'
-            break;
-        case 'ArrowUp':
-            player2.velocity.y = -25
-            break;
-        case 'k':
-            player2.attack();
-            // player2.isAttacking = true
-            break;
+    if (!player1.dead) {
+        switch (event.key) {
+            case 'd':
+                keybugfix.d.pressed = true
+                player1.lastKey = 'd'
+                break;
+            case 'a':
+                keybugfix.a.pressed = true
+                player1.lastKey = 'a'
+                break;
+            case 'w':
+                player1.velocity.y = -25
+                break;
+            case ' ':
+                player1.attack();
+                break;
+        }
+    }
+    if (!player2.dead) {
+        switch (event.key) {
+            case 'ArrowRight':
+                keybugfix.ArrowRight.pressed = true
+                player2.lastKey = 'ArrowRight'
+                break;
+            case 'ArrowLeft':
+                keybugfix.ArrowLeft.pressed = true
+                player2.lastKey = 'ArrowLeft'
+                break;
+            case 'ArrowUp':
+                player2.velocity.y = -25
+                break;
+            case 'k':
+                player2.attack();
+                // player2.isAttacking = true
+                break;
+        }
     }
 })
 window.addEventListener('keyup', function (event) {
