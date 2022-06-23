@@ -1,3 +1,17 @@
+// const gameArea = {
+//     button: document.querySelector('#initializer'),
+//     initial: document.querySelector('.starting'),
+//     game: document.querySelector('.hidden'),
+//     startFightingGame: function() {
+//         this.game.classList.toggle('hidden')
+//         this.initial.classList.add('to-hidden')
+//     }
+// }
+// // console.log(Gamearea.initial)
+// gameArea.button.addEventListener("click", function () {
+//     gameArea.startFightingGame()
+//     // console.log(gameArea)
+// });
 const fightingCanvas = document.querySelector("#game-canvas");
 const c = fightingCanvas.getContext('2d');
 
@@ -8,12 +22,12 @@ const background = new BackgroundSprite({
         x: 0,
         y: 0
     },
-    ImageSrc: './images/background.png'
+    ImageSrc: './images/backgroundNew.png'
 })
 const shop = new Sprite({
     position: {
-        x: 830,
-        y: 360,
+        x: 550,
+        y: 410,
     },
     ImageSrc: './images/shop.png',
     scale: 2.5,
@@ -28,7 +42,7 @@ const globalGravity = 1
 
 const player1 = new Fighter({
     position: {
-        x: 0,
+        x: 40,
         // y: -(fightingCanvas.height - 600)
         y: 0
     },
@@ -38,15 +52,15 @@ const player1 = new Fighter({
     },
     color: 'red',
     displacement: {
-        x: 0,
-        y: 0
+        x: 75,
+        y: 70
     },
     ImageSrc: './images/samuraiMack/Idle.png',
     framesMax: 8,
     scale: 2.5,
     offset: {
-        x: 215,
-        y: 135,
+        x: 220,
+        y: 129,
     },
     sprites: {
         idle: {
@@ -74,7 +88,7 @@ const player1 = new Fighter({
 })
 const player2 = new Fighter({
     position: {
-        x: fightingCanvas.width - 300,
+        x: fightingCanvas.width - 80,
         // y: -(fightingCanvas.height - 400)
         y: 0
     },
@@ -84,25 +98,37 @@ const player2 = new Fighter({
     },
     color: 'blue',
     displacement: {
-        x: -100,
-        y: 0
+        x: -160,
+        y: 70
     },
-    ImageSrc: './images/samuraiMack/Idle.png',
-    framesMax: 8,
-    scale: 2.5,
+    ImageSrc: './images/warrior/Idle.png',
+    framesMax: 10,
+    scale: 3.5,
     offset: {
-        x: 215,
-        y: 135,
+        x: 208,
+        y: 129,
     },
     sprites: {
         idle: {
-            ImageSrc: './images/samuraiMack/Idle.png',
-            framesMax: 8,
+            ImageSrc: './images/warrior/Idle.png',
+            framesMax: 10,
         },
         run: {
-            ImageSrc: './images/samuraiMack/Run.png',
-            framesMax: 8,
+            ImageSrc: './images/warrior/Run.png',
+            framesMax: 6,
         },
+        jump: {
+            ImageSrc: './images/warrior/Jump.png',
+            framesMax: 2,
+        },
+        fall: {
+            ImageSrc: './images/warrior/Fall.png',
+            framesMax: 2,
+        },
+        attack1: {
+            ImageSrc: './images/warrior/Attack1.png',
+            framesMax: 4,
+        }
     }
 
 })
@@ -136,7 +162,7 @@ function animation() {
     window.requestAnimationFrame(animation);
     // console.log("fighting animation frames running")
     player1.update()
-    // player2.update()
+    player2.update()
     // console.log(player1.position.y)
     // console.log(player2.position.y)
 
@@ -152,17 +178,29 @@ function animation() {
     } else {
         player1.spriteChange('idle')
     }
-    if (player1.velocity.y < -1) {
+    // PLAYER1 JUMPING // PLAYER1 JUMPING // PLAYER1 JUMPING
+    if (player1.velocity.y < -5) {
         player1.spriteChange('jump')
-        console.log(player1)
+        // console.log(player1)
     } else if (player1.velocity.y > 2) {
         player1.spriteChange('fall')
     }
     // PLAYER TWO UPDATE MOVEMENT THROUGH BOOLEANS/IF STATEMENTS/EVENTLISTENERS
     if (keybugfix.ArrowLeft.pressed && player2.lastKey === 'ArrowLeft') {
         player2.velocity.x = -6
+        player2.spriteChange('run')
     } else if (keybugfix.ArrowRight.pressed && player2.lastKey === 'ArrowRight') {
         player2.velocity.x = 6
+        player2.spriteChange('run')
+    } else {
+        player2.spriteChange('idle')
+    }
+    // PLAYER1 JUMPING // PLAYER1 JUMPING // PLAYER1 JUMPING
+    if (player2.velocity.y < -1) {
+        player1.spriteChange('jump')
+        // console.log(player1)
+    } else if (player2.velocity.y > 2) {
+        player1.spriteChange('fall')
     }
     // COLLISION DETECTION // COLLISION DETECTION // COLLISION DETECTION 
     if (boxCollision({
@@ -171,7 +209,7 @@ function animation() {
     }) && player1.isAttacking) {
         console.log('Beginning to understand collision detection')
         player1.isAttacking = false;
-        player2.health -= 2
+        player2.health -= 10
         righthitbox.style.width = player2.health + '%'
     }
     if (boxCollision({
@@ -180,13 +218,14 @@ function animation() {
     }) && player2.isAttacking) {
         console.log('Player 2 attack detection')
         player2.isAttacking = false;
-        player1.health -= 2
+        player1.health -= 10
         lefthitbox.style.width = player1.health + '%'
     }
     // END GAME // END GAME // END GAME // END GAME
     if (player1.health <= 0 || player2.health <= 0) {
         determinWhoWins({ player1, player2, timerID })
     }
+    console.log(player2.velocity.y)
 }
 
 animation()
@@ -218,7 +257,7 @@ window.addEventListener('keydown', function (event) {
         case 'ArrowUp':
             player2.velocity.y = -25
             break;
-        case 'ArrowDown':
+        case 'k':
             player2.attack();
             // player2.isAttacking = true
             break;

@@ -83,3 +83,64 @@ body {
   display: none;
   font-size: 6rem;
 }
+.starting {
+  height: 100vh;
+  width: 100vw;
+  /* background-color: rgba(255,0,0,0.5); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.starting-top {
+  height: 40%;
+  width: 100%;
+  /* background-color: rgba(0,0,255,0.5); */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.starting-bottom {
+  height: 60%;
+  width: 100%;
+  /* background-color: rgba(0,255,0,0.5); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.instructions {
+  height: 50%;
+  width: 55%;
+  background-color: rgba(255,255,255,0.65);
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 50px;
+
+}
+.instructions-text {
+  font-size: 1.4rem;
+}
+#initializer {
+  padding: 20px 40px;
+  font-size: 5rem;
+  border-radius: 20px;
+  background-color: rgb(35, 59, 157);
+  color: white;
+  box-shadow: 0px 6px 10px 8px rgba(0, 0, 0, 0.79);
+}
+#initializer:hover {
+  background-color: red;
+}
+/* .hidden {
+  display: none;
+}
+.to-hidden {
+  display: none;
+} */

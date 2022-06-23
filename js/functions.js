@@ -18,16 +18,21 @@ function determinWhoWins({ player1, player2, timerID }) {
         endMessage.style.display = 'flex'
     }
 }
-
-let timer = 10000
+let timer = 300
+let minutes = 0;
+let seconds = 0;
 timerID = '';
 function decreaseTimer() {
-    timerID = setTimeout(decreaseTimer, 100)
+    minutes = Math.floor(timer / 60);
+    seconds = timer - (minutes * 60);
+    timerID = setTimeout(decreaseTimer, 1000)
     if (timer > 0) {
         timer--
-        timerLocation.innerHTML = timer
+        timerLocation.innerHTML = `${minutes}:${(seconds)}`
     }
     if (timer === 0) {
         determinWhoWins({ player1, player2, timerID })
     }
+
+    // console.log(minutes)
 }

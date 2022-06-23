@@ -120,17 +120,22 @@ class Fighter extends Sprite {
         this.framesElapsed++;
         this.framesCalculator();
         this.attackBox.position.x = this.position.x + this.attackBox.displacement.x;
-        this.attackBox.position.y = this.position.y;
+        this.attackBox.position.y = this.position.y + this.attackBox.displacement.y;
+        c.strokeStyle = "green"
+        c.lineWidth = '10'
+        c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+        c.strokeRect(this.position.x, this.position.y, this.width, this.height)
+
         this.position.y += this.velocity.y;
-        if (this.position.y > fightingCanvas.height - 301) {
+        if (this.position.y > fightingCanvas.height - 260) {
             this.velocity.y = 0;
-            this.position.y = fightingCanvas.height - 299;
+            // this.position.y = fightingCanvas.height - 299;
         } else {
             this.velocity.y += globalGravity;
         }
         this.position.x += this.velocity.x;
-        console.log(this.position.y)
-        console.log(this.velocity.y)
+        // console.log(this.position.y)
+        // console.log(this.velocity.y)
     }
     attack() {
         this.isAttacking = true;
