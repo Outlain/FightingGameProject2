@@ -22,7 +22,7 @@ const background = new BackgroundSprite({
         x: 0,
         y: 0
     },
-    ImageSrc: './images/backgroundNew.png'
+    ImageSrc: './images/BackgroundNew.png'
 })
 const shop = new Sprite({
     position: {
