@@ -141,7 +141,7 @@ const player2 = new Fighter({
             framesMax: 3,
         },
         death: {
-            ImageSrc: './images/warrior/death.png',
+            ImageSrc: './images/warrior/Death.png',
             framesMax: 9,
         }
     }
