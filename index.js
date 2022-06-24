@@ -189,7 +189,7 @@ const keybugfix = {
 // }, 2000);
 ravensSource = '../images/RavensFix.png'
 owlsSource = '../images/owls fix.png'
-platformRockImg = '../images/platform.png'
+platformRockImg = './platformimg1.png'
 let bottomLeftRock = new PlatformClass(platformRockImg, 4, {
     x: 135,
     y: 490,
