@@ -69,7 +69,7 @@ const player1 = new Fighter({
         x: 60,
         y: 70
     },
-    ImageSrc: './images/Armor/_Idle.png',
+    ImageSrc: './images/Armor/Idle.png',
     framesMax: 10,
     scale: 3.3,
     offset: {
@@ -78,31 +78,31 @@ const player1 = new Fighter({
     },
     sprites: {
         idle: {
-            ImageSrc: './images/Armor/_Idle.png',
+            ImageSrc: './images/Armor/Idle.png',
             framesMax: 10,
         },
         run: {
-            ImageSrc: './images/Armor/_Run.png',
+            ImageSrc: './images/Armor/Run.png',
             framesMax: 10,
         },
         jump: {
-            ImageSrc: './images/Armor/_Jump.png',
+            ImageSrc: './images/Armor/Jump.png',
             framesMax: 3,
         },
         fall: {
-            ImageSrc: './images/Armor/_Fall.png',
+            ImageSrc: './images/Armor/Fall.png',
             framesMax: 3,
         },
         attack1: {
-            ImageSrc: './images/Armor/_Attack.png',
+            ImageSrc: './images/Armor/Attack.png',
             framesMax: 4,
         },
         takehit: {
-            ImageSrc: './images/Armor/_Hit.png',
+            ImageSrc: './images/Armor/Hit.png',
             framesMax: 1,
         },
         death: {
-            ImageSrc: './images/Armor/_Death.png',
+            ImageSrc: './images/Armor/Death.png',
             framesMax: 10,
         }
     }
