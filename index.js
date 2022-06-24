@@ -10,14 +10,17 @@ const gameArea = {
 // console.log(Gamearea.initial)
 gameArea.button.addEventListener("click", function () {
     gameArea.startFightingGame()
-    // console.log(gameArea)
     decreaseTimer()
 });
 fightingCanvas = document.querySelector("#game-canvas");
 c = fightingCanvas.getContext('2d');
-
+let framescount = 0
+let ravensArray = [];
+let OwlsArray = [];
 fightingCanvas.width = 1400;
 fightingCanvas.height = 800;
+
+
 const background = new BackgroundSprite({
     position: {
         x: 0,
@@ -27,11 +30,11 @@ const background = new BackgroundSprite({
 })
 const shop = new Sprite({
     position: {
-        x: 555,
-        y: 410,
+        x: 635,
+        y: 515,
     },
     ImageSrc: './images/shop.png',
-    scale: 2.5,
+    scale: 1.5,
     framesMax: 6,
 })
 
@@ -53,9 +56,9 @@ const globalGravity = 1
 
 const player1 = new Fighter({
     position: {
-        x: 40,
+        x: 23,
         // y: -(fightingCanvas.height - 600)
-        y: 400
+        y: 42
     },
     velocity: {
         x: 0,
@@ -63,44 +66,44 @@ const player1 = new Fighter({
     },
     color: 'red',
     displacement: {
-        x: 75,
+        x: 60,
         y: 70
     },
     ImageSrc: './images/samuraiMack/Idle.png',
     framesMax: 8,
-    scale: 2.5,
+    scale: 3.3,
     offset: {
-        x: 220,
-        y: 129,
+        x: 155,
+        y: 90,
     },
     sprites: {
         idle: {
-            ImageSrc: './images/samuraiMack/Idle.png',
-            framesMax: 8,
+            ImageSrc: './images/Armor/_Idle.png',
+            framesMax: 10,
         },
         run: {
-            ImageSrc: './images/samuraiMack/Run.png',
-            framesMax: 8,
+            ImageSrc: './images/Armor/_Run.png',
+            framesMax: 10,
         },
         jump: {
-            ImageSrc: './images/samuraiMack/Jump.png',
-            framesMax: 2,
+            ImageSrc: './images/Armor/_Jump.png',
+            framesMax: 3,
         },
         fall: {
-            ImageSrc: './images/samuraiMack/Fall.png',
-            framesMax: 2,
+            ImageSrc: './images/Armor/_Fall.png',
+            framesMax: 3,
         },
         attack1: {
-            ImageSrc: './images/samuraiMack/Attack1.png',
-            framesMax: 6,
-        },
-        takehit: {
-            ImageSrc: './images/samuraiMack/Take Hit - white silhouette.png',
+            ImageSrc: './images/Armor/_Attack.png',
             framesMax: 4,
         },
+        takehit: {
+            ImageSrc: './images/Armor/_Hit.png',
+            framesMax: 1,
+        },
         death: {
-            ImageSrc: './images/samuraiMack/Death.png',
-            framesMax: 6,
+            ImageSrc: './images/Armor/_Death.png',
+            framesMax: 10,
         }
     }
 })
@@ -160,7 +163,6 @@ const player2 = new Fighter({
 })
 console.log(mainPlatform)
 console.log(player1)
-
 const keybugfix = {
     a: {
         pressed: false
@@ -181,20 +183,75 @@ const keybugfix = {
         pressed: false
     }
 }
+// let initialRaven = new ravens()
+// setInterval(() => {
+//     framescount ++
+// }, 2000);
+ravensSource = '../images/RavensFix.png'
+owlsSource = '../images/owls fix.png'
+platformRockImg = '../images/floating-platform-spritesheet.png'
+let bottomLeftRock = new PlatformClass(platformRockImg, 4, {
+    x: 135,
+    y: 490,
+})
+let bottomMiddleLeftRock = new PlatformClass(platformRockImg, 4, {
+    x: 445,
+    y: 490,
+})
+let leftRock = new PlatformClass(platformRockImg, 4, {
+    x: 285,
+    y: 340,
+})
+let bottomRightRock = new PlatformClass(platformRockImg, 4, {
+    x: 1145,
+    y: 490,
+})
+let bottomMiddleRightRock = new PlatformClass(platformRockImg, 4, {
+    x: 835,
+    y: 490,
+})
+let rightRock = new PlatformClass(platformRockImg, 4, {
+    x: 985,
+    y: 340,
+})
+let mainRock = new MainPlatform(platformRockImg, 4, {
+    x: 425,
+    y: 75,
+})
 function animation() {
+    framescount++
+    if (framescount % 60 == 0) {
+        ravensArray.push(new Ravens(ravensSource, 9))
+    }
+    if (framescount % 300 == 0) {
+        OwlsArray.push(new Owls(owlsSource, 6))
+    }
     c.clearRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     c.fillStyle = 'black'
     c.fillRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     background.update();
     mainPlatform.draw();
+    mainRock.update();
     bottomLeftPlatform.draw();
     bottomMiddleLeftPlatform.draw();
     leftPlatform.draw();
     bottomRightPlatform.draw();
     bottomMiddleRightPlatform.draw();
     rightPlatform.draw();
+    bottomLeftRock.update()
+    bottomMiddleLeftRock.update();
+    leftRock.update();
+    bottomRightRock.update();
+    bottomMiddleRightRock.update();
+    rightRock.update();
     shop.update();
-    window.requestAnimationFrame(animation);
+    // INITIALIZING AND ANIMATING RAVENS
+    ravensArray.forEach(object => object.update())
+    ravensArray = ravensArray.filter(object => !object.deleted);
+    console.log(ravensArray)
+    // INITIALIZING AND ANIMATING OWLS
+    OwlsArray.forEach(object => object.update())
+    OwlsArray = OwlsArray.filter(object => !object.deleted); window.requestAnimationFrame(animation);
     // console.log("fighting animation frames running")
     player1.update()
     player2.update()

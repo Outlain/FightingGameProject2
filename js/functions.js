@@ -35,7 +35,8 @@ function decreaseTimer() {
 }
 function platform(player, platform) {
     if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x &&player.position.x < platform.position.x + platform.dimension.width) {
-        player.velocity.y = 0 
+        player.velocity.y = 0
+        // player.position.y = platform.position.y + 1
     }
 }
 
@@ -56,17 +57,17 @@ function platformRendering() {
             y: 575,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })
     bottomMiddleLeftPlatform = new Platform({
         position: {
-            x: fightingCanvas.width/4 + 100,
+            x: fightingCanvas.width/4 + 110,
             y: 575,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })
@@ -76,17 +77,17 @@ function platformRendering() {
             y: 425,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })
     bottomRightPlatform = new Platform({
         position: {
-            x: ((fightingCanvas.width/4) * 3) + 100,
+            x: ((fightingCanvas.width/4) * 3) + 110,
             y: 575,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })
@@ -96,7 +97,7 @@ function platformRendering() {
             y: 575,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })
@@ -106,7 +107,7 @@ function platformRendering() {
             y: 425,
         },
         dimension: {
-            width: 100,
+            width: 110,
             height: 13,
         }
     })

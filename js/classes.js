@@ -22,7 +22,7 @@ class BackgroundSprite {
     }
 }
 class Platform {
-    constructor({position, dimension}){
+    constructor({ position, dimension }) {
         this.position = position;
         this.dimension = dimension;
     }
@@ -234,15 +234,95 @@ class Fighter extends Sprite {
     //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
     // }
 }
-class ravens {
-    constructor() {
+class Ravens {
+    constructor(source, framesMax) {
+        this.image = new Image();
+        this.image.src = source;
         this.position = {
-            x: 213,
-            y: 325,
+            x: -this.image.width,
+            y: Math.floor(Math.random() * (fightingCanvas.height / 3.8) + 300),
         }
         this.dimensions = {
-            width: 23,
-            height: 242,
+            width: 60,
+            height: 40,
+        }
+        this.velocity = {
+            x: Math.random() < 0.95 ? Math.random() * 3 + 3 : 10,
+            y: 0,
+        }
+        this.deleted = false;
+        this.currentFrame = 0;
+        this.framesMax = framesMax;
+        this.intervalFix = 0
+        this.flapRandomixer = Math.floor(Math.random() * 2 + 1)
+    }
+
+    draw() {
+        // c.fillRect(this.position.x, this.position.y, this.dimensions.width, this.dimensions.height)
+        c.drawImage(this.image, this.currentFrame * (this.image.width / this.framesMax), 0, this.image.width / this.framesMax, this.image.height, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height)
+    }
+    deleteLeftToRight() {
+        if (this.position.x > fightingCanvas.width + this.image.width) {
+            this.deleted = true
+        }
+    }
+    deleteRightToLeft() {
+        if (this.position.x < -this.image.width) {
+            this.deleted = true
+        }
+    }
+    update() {
+        this.intervalFix++
+        this.draw()
+        this.position.x += this.velocity.x
+        this.deleteLeftToRight();
+        this.deleteRightToLeft();
+        if (this.currentFrame > this.framesMax - 2) {
+            this.currentFrame = 0
+        } else {
+            if (this.intervalFix % this.flapRandomixer === 0) { this.currentFrame++; }
+        }
+    }
+}
+class Owls extends Ravens {
+    constructor(source, framesMax) {
+        super(source, framesMax)
+        this.position = {
+            x: fightingCanvas.width,
+            y: Math.floor(Math.random() * (fightingCanvas.height / 4) + 100),
+        }
+        this.dimensions = {
+            width: 90,
+            height: 60,
+        }
+        this.velocity = {
+            x: -(Math.random() < 0.8 ? Math.random() * 2 + 2 : 6),
+            y: 0,
+        }
+        this.flapRandomixer = Math.floor(Math.random() * 3 + 9)
+    }
+}
+class PlatformClass extends Ravens {
+    constructor(source, framesMax, position) {
+        super(source, framesMax)
+        this.position = position
+        this.dimensions = {
+            width: 140,
+            height: 140,
+        }
+        this.velocity = {
+            x: 0,
+            y: 0,
+        }
+        this.flapRandomixer = 50
+    }
+}
+class MainPlatform extends PlatformClass {
+    constructor(source, framesMax, position) {
+        super(source, framesMax, position)
+        this.dimensions = {
+            width: 600,
+            height: 300,
         }
     }
 }
