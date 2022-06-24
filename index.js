@@ -187,8 +187,8 @@ const keybugfix = {
 // setInterval(() => {
 //     framescount ++
 // }, 2000);
-ravensSource = '../images/RavensFix.png'
-owlsSource = '../images/owls fix.png'
+ravensSource = './RavensFix.png'
+owlsSource = './owls fix.png'
 platformRockImg = './platformimg1.png'
 let bottomLeftRock = new PlatformClass(platformRockImg, 4, {
     x: 135,
