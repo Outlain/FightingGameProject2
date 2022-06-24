@@ -122,7 +122,7 @@ const player2 = new Fighter({
         x: -160,
         y: 70
     },
-    ImageSrc: './images/warrior/_Idle.png',
+    ImageSrc: './images/warrior/Idle.png',
     framesMax: 10,
     scale: 3.5,
     offset: {
