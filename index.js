@@ -69,8 +69,8 @@ const player1 = new Fighter({
         x: 60,
         y: 70
     },
-    ImageSrc: './images/samuraiMack/Idle.png',
-    framesMax: 8,
+    ImageSrc: './images/Armor/_Idle.png',
+    framesMax: 10,
     scale: 3.3,
     offset: {
         x: 155,
