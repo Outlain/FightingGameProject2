@@ -11,9 +11,10 @@ const gameArea = {
 gameArea.button.addEventListener("click", function () {
     gameArea.startFightingGame()
     // console.log(gameArea)
+    decreaseTimer()
 });
-const fightingCanvas = document.querySelector("#game-canvas");
-const c = fightingCanvas.getContext('2d');
+fightingCanvas = document.querySelector("#game-canvas");
+c = fightingCanvas.getContext('2d');
 
 fightingCanvas.width = 1400;
 fightingCanvas.height = 800;
@@ -26,13 +27,23 @@ const background = new BackgroundSprite({
 })
 const shop = new Sprite({
     position: {
-        x: 550,
+        x: 555,
         y: 410,
     },
     ImageSrc: './images/shop.png',
     scale: 2.5,
     framesMax: 6,
 })
+
+let mainPlatform = '';
+let bottomLeftPlatform = '';
+let bottomMiddleLeftPlatform = '';
+let leftPlatform = '';
+let bottomRightPlatform = '';
+let bottomMiddleRightPlatform = '';
+let rightPlatform = '';
+
+platformRendering()
 const lefthitbox = document.querySelector('.left-side-hp');
 const righthitbox = document.querySelector(".right-side-hp");
 const timerLocation = document.querySelector('.middle');
@@ -44,7 +55,7 @@ const player1 = new Fighter({
     position: {
         x: 40,
         // y: -(fightingCanvas.height - 600)
-        y: 0
+        y: 400
     },
     velocity: {
         x: 0,
@@ -97,7 +108,7 @@ const player2 = new Fighter({
     position: {
         x: fightingCanvas.width - 80,
         // y: -(fightingCanvas.height - 400)
-        y: 0
+        y: 400
     },
     velocity: {
         x: 0,
@@ -147,6 +158,9 @@ const player2 = new Fighter({
     }
 
 })
+console.log(mainPlatform)
+console.log(player1)
+
 const keybugfix = {
     a: {
         pressed: false
@@ -167,12 +181,18 @@ const keybugfix = {
         pressed: false
     }
 }
-decreaseTimer()
 function animation() {
     c.clearRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     c.fillStyle = 'black'
     c.fillRect(0, 0, fightingCanvas.width, fightingCanvas.height)
     background.update();
+    mainPlatform.draw();
+    bottomLeftPlatform.draw();
+    bottomMiddleLeftPlatform.draw();
+    leftPlatform.draw();
+    bottomRightPlatform.draw();
+    bottomMiddleRightPlatform.draw();
+    rightPlatform.draw();
     shop.update();
     window.requestAnimationFrame(animation);
     // console.log("fighting animation frames running")
@@ -217,6 +237,22 @@ function animation() {
     } else if (player2.velocity.y > 5) {
         player2.spriteChange('fall')
     }
+    // PLATFORM COLLISION
+    platform(player2, mainPlatform)
+    platform(player1, mainPlatform)
+    platform(player1, bottomLeftPlatform)
+    platform(player2, bottomLeftPlatform)
+    platform(player1, bottomMiddleLeftPlatform)
+    platform(player2, bottomMiddleLeftPlatform)
+    platform(player1, leftPlatform)
+    platform(player2, leftPlatform)
+    platform(player1, bottomRightPlatform)
+    platform(player2, bottomRightPlatform)
+    platform(player1, rightPlatform)
+    platform(player2, rightPlatform)
+    platform(player1, bottomMiddleRightPlatform)
+    platform(player2, bottomMiddleRightPlatform)
+    // console.log(player1.position.y)
     // COLLISION DETECTION // COLLISION DETECTION // COLLISION DETECTION 
     if (boxCollision({
         box1: player1,
@@ -240,7 +276,8 @@ function animation() {
     if (player1.health <= 0 || player2.health <= 0) {
         determinWhoWins({ player1, player2, timerID })
     }
-    console.log(player2.velocity.y)
+    // console.log(player2.velocity.y)
+    // console.log(player1)
 }
 
 animation()
@@ -257,7 +294,7 @@ window.addEventListener('keydown', function (event) {
                 player1.lastKey = 'a'
                 break;
             case 'w':
-                player1.velocity.y = -25
+                player1.velocity.y = -20
                 break;
             case ' ':
                 player1.attack();
@@ -275,7 +312,7 @@ window.addEventListener('keydown', function (event) {
                 player2.lastKey = 'ArrowLeft'
                 break;
             case 'ArrowUp':
-                player2.velocity.y = -25
+                player2.velocity.y = -20
                 break;
             case 'k':
                 player2.attack();

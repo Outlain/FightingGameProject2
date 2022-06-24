@@ -7,7 +7,6 @@ function boxCollision({ box1, box2 }) {
 function determinWhoWins({ player1, player2, timerID }) {
     clearTimeout(timerID)
     if (player1.health === player2.health) {
-        console.log("tie")
         endMessage.innerHTML = "Tie"
         endMessage.style.display = 'flex'
     } else if (player1.health > player2.health) {
@@ -33,6 +32,82 @@ function decreaseTimer() {
     if (timer === 0) {
         determinWhoWins({ player1, player2, timerID })
     }
+}
+function platform(player, platform) {
+    if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x &&player.position.x < platform.position.x + platform.dimension.width) {
+        player.velocity.y = 0 
+    }
+}
 
-    // console.log(minutes)
+function platformRendering() {
+    mainPlatform = new Platform({
+        position: {
+            x: fightingCanvas.width/2 - 225,
+            y: 250,
+        },
+        dimension: {
+            width: 500,
+            height: 20,
+        }
+    })
+    bottomLeftPlatform = new Platform({
+        position: {
+            x: fightingCanvas.width/4 -200,
+            y: 575,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
+    bottomMiddleLeftPlatform = new Platform({
+        position: {
+            x: fightingCanvas.width/4 + 100,
+            y: 575,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
+    leftPlatform = new Platform({
+        position: {
+            x: fightingCanvas.width/4 -50,
+            y: 425,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
+    bottomRightPlatform = new Platform({
+        position: {
+            x: ((fightingCanvas.width/4) * 3) + 100,
+            y: 575,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
+    bottomMiddleRightPlatform = new Platform({
+        position: {
+            x: ((fightingCanvas.width/4) * 3) - 200,
+            y: 575,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
+    rightPlatform = new Platform({
+        position: {
+            x: ((fightingCanvas.width/4) * 3) - 50,
+            y: 425,
+        },
+        dimension: {
+            width: 100,
+            height: 13,
+        }
+    })
 }

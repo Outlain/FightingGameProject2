@@ -1,3 +1,5 @@
+let fightingCanvas = '';
+let c = '';
 class BackgroundSprite {
     constructor({ position, ImageSrc }) {
         this.position = position;
@@ -17,6 +19,18 @@ class BackgroundSprite {
     }
     update() {
         this.draw();
+    }
+}
+class Platform {
+    constructor({position, dimension}){
+        this.position = position;
+        this.dimension = dimension;
+    }
+
+    draw() {
+        c.fillStyle = "gray"
+        c.lineWidth = '10'
+        c.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height)
     }
 }
 class Sprite {
@@ -109,6 +123,7 @@ class Fighter extends Sprite {
         this.framesHold = 3;
         this.sprites = sprites
         this.dead = false
+        this.jumping = false
 
         for (const sprite in this.sprites) {
             sprites[sprite].image = new Image();
@@ -218,4 +233,16 @@ class Fighter extends Sprite {
     //     c.strokeStyle = "green"
     //     c.strokeRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
     // }
+}
+class ravens {
+    constructor() {
+        this.position = {
+            x: 213,
+            y: 325,
+        }
+        this.dimensions = {
+            width: 23,
+            height: 242,
+        }
+    }
 }
